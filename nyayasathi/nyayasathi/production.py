@@ -3,7 +3,6 @@ Production settings for nyayasathi project.
 """
 
 import os
-import dj_database_url
 from .settings import *
 
 # SECURITY WARNING: don't run with debug turned on in production!
@@ -20,13 +19,12 @@ ALLOWED_HOSTS = [
     '.onrender.com',  # Allow all onrender.com subdomains
 ]
 
-# Database configuration for production
+# Database configuration for production (SQLite for college project)
 DATABASES = {
-    'default': dj_database_url.config(
-        default=os.environ.get('DATABASE_URL'),
-        conn_max_age=600,
-        conn_health_checks=True,
-    )
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+    }
 }
 
 # Static files configuration

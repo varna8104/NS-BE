@@ -10,6 +10,5 @@ python-docx==1.1.0
 PyPDF2==3.0.1
 whisper==1.1.10
 gunicorn==21.2.0
-psycopg2-binary==2.9.9
 whitenoise==6.6.0
 dj-database-url==2.1.0 

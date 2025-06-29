@@ -1,6 +1,6 @@
-# Render Deployment Guide for NS-BE
+# Render Deployment Guide for NS-BE (College Project - SQLite)
 
-This guide will help you deploy the NS-BE Django backend to Render.
+This guide will help you deploy the NS-BE Django backend to Render using SQLite (perfect for college projects).
 
 ## Prerequisites
 
@@ -8,28 +8,17 @@ This guide will help you deploy the NS-BE Django backend to Render.
 2. A Render account (free tier available)
 3. API keys for Groq and Hugging Face
 
-## Step 1: Create a PostgreSQL Database on Render
+## Step 1: Create a Web Service (No Database Setup Required!)
 
 1. Go to [Render Dashboard](https://dashboard.render.com/)
-2. Click "New" → "PostgreSQL"
-3. Configure the database:
-   - **Name**: `ns-be-db` (or your preferred name)
-   - **Database**: `nyayasathi`
-   - **User**: `nyayasathi_user`
-   - **Region**: Choose closest to your users
-4. Click "Create Database"
-5. **Save the connection details** - you'll need them later
-
-## Step 2: Create a Web Service
-
-1. In Render Dashboard, click "New" → "Web Service"
-2. Connect your GitHub repository: `varna8104/NS-BE`
-3. Configure the service:
+2. Click "New" → "Web Service"
+3. Connect your GitHub repository: `varna8104/NS-BE`
+4. Configure the service:
 
 ### Basic Settings
 - **Name**: `ns-be` (or your preferred name)
 - **Environment**: `Python 3`
-- **Region**: Same as your database
+- **Region**: Choose closest to your users
 - **Branch**: `main`
 
 ### Build & Deploy Settings
@@ -41,13 +30,12 @@ This guide will help you deploy the NS-BE Django backend to Render.
 - **Auto-Deploy**: Yes
 - **Health Check Path**: `/api/` (optional)
 
-## Step 3: Configure Environment Variables
+## Step 2: Configure Environment Variables
 
 In your web service settings, add these environment variables:
 
 ### Required Variables
 - **SECRET_KEY**: Generate a secure Django secret key
-- **DATABASE_URL**: Copy from your PostgreSQL service
 - **DEBUG**: `False`
 - **GROQ_API_KEY**: Your Groq API key
 - **HUGGINGFACE_API_KEY**: Your Hugging Face API key
@@ -64,7 +52,7 @@ In your web service settings, add these environment variables:
    - **Value**: Variable value
    - **Environment**: Production
 
-## Step 4: Deploy
+## Step 3: Deploy
 
 1. Click "Create Web Service"
 2. Render will automatically:
@@ -73,7 +61,7 @@ In your web service settings, add these environment variables:
    - Run the build script
    - Start the application
 
-## Step 5: Verify Deployment
+## Step 4: Verify Deployment
 
 1. Check the deployment logs for any errors
 2. Visit your service URL (e.g., `https://ns-be.onrender.com`)
@@ -107,7 +95,6 @@ python manage.py migrate
 | Variable | Description | Example |
 |----------|-------------|---------|
 | `SECRET_KEY` | Django secret key | `django-insecure-...` |
-| `DATABASE_URL` | PostgreSQL connection string | `postgresql://user:pass@host:port/db` |
 | `DEBUG` | Debug mode | `False` |
 | `GROQ_API_KEY` | Groq API key | `gsk_...` |
 | `HUGGINGFACE_API_KEY` | Hugging Face API key | `hf_...` |
@@ -118,6 +105,24 @@ python manage.py migrate
 |----------|-------------|---------|
 | `CORS_ALLOWED_ORIGINS` | Frontend domains | `https://ns-fe.vercel.app` |
 
+## Important Notes for SQLite Deployment
+
+### Advantages for College Projects:
+- ✅ **No database setup required**
+- ✅ **Faster deployment**
+- ✅ **No additional costs**
+- ✅ **Perfect for demonstrations**
+
+### Limitations:
+- ⚠️ **Data resets on service restart** (Render's ephemeral file system)
+- ⚠️ **No concurrent database access**
+- ⚠️ **Not suitable for high traffic**
+
+### For College Project Demo:
+- The database will be recreated each time the service restarts
+- Perfect for showing functionality without persistent data
+- You can always migrate to PostgreSQL later if needed
+
 ## Troubleshooting
 
 ### Common Issues
@@ -127,17 +132,12 @@ python manage.py migrate
    - Verify `build.sh` has execute permissions
    - Ensure all dependencies are in `requirements.txt`
 
-2. **Database Connection Issues**
-   - Verify `DATABASE_URL` is correct
-   - Check if database is accessible from web service
-   - Ensure database is in the same region
-
-3. **Environment Variable Issues**
+2. **Environment Variable Issues**
    - Verify all required variables are set
    - Check variable names match exactly
    - Ensure no extra spaces in values
 
-4. **Static Files Issues**
+3. **Static Files Issues**
    - Check if `STATIC_ROOT` is properly configured
    - Verify `collectstatic` command runs successfully
 
@@ -153,17 +153,7 @@ python manage.py migrate
    - Look for error messages
    - Check for missing environment variables
 
-3. **Test Locally**
-   - Clone the repository locally
-   - Set up environment variables
-   - Run the application locally to test
-
 ## Performance Optimization
-
-### Database Optimization
-- Use connection pooling
-- Optimize database queries
-- Add database indexes
 
 ### Application Optimization
 - Enable caching
